@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder - Login</title>
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --bg: #f0f2f5;
+      --card-bg: #fff;
+      --text: #202124;
+      --border: #dadce0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .overlay {
+      background: white; border-radius: 12px; padding: 30px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      max-width: 450px; width: 90%; text-align: center;
+    }
+    .overlay h2 { margin-bottom: 20px; color: var(--primary); }
+    input, select, textarea, button {
+      width: 100%; padding: 10px; margin: 6px 0; border: 1px solid var(--border);
+      border-radius: 8px; font-size: 0.9rem; font-family: inherit;
+    }
+    button { background: var(--primary); color: white; font-weight: bold; border: none; cursor: pointer; }
+    button:hover { background: #1557b0; }
+    .error { color: red; margin: 10px 0; }
+    #app { display: none; }
+    .form-section { background: var(--card-bg); border-radius: 10px; padding: 20px; margin: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .tag { display: inline-block; background: #e8f0fe; padding: 4px 10px; border-radius: 15px; font-size: 0.8rem; margin: 3px; cursor: pointer; user-select: none; }
+    .tag.selected { background: var(--primary); color: #fff; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .row .field { flex: 1; min-width: 180px; }
+    label { font-weight: 600; font-size: 0.85rem; display: block; margin: 8px 0 4px; }
+    .dynamic-item { background: #fafafa; padding: 12px; border-radius: 8px; margin: 10px 0; border: 1px solid #eee; }
+    .btn-add { background: #e8f5e9; color: #2e7d32; border: 1px dashed #4caf50; padding: 8px 16px; border-radius: 20px; cursor: pointer; margin-top: 10px; }
+    .btn-remove { background: #ffebee; color: #c62828; border: none; padding: 4px 10px; border-radius: 12px; cursor: pointer; font-size: 0.75rem; }
+    .tag-container { max-height: 200px; overflow-y: auto; padding: 4px 0; }
+    .info { background: #fffde7; padding: 10px; border-radius: 6px; font-size: 0.8rem; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN GATE -->
+<div id="loginOverlay" class="overlay">
+  <h2>🔐 Access Restricted</h2>
+  <p>Enter your credentials to continue</p>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="checkLogin()">Login</button>
+  <div id="loginError" class="error"></div>
+  <p style="font-size:0.7rem;color:#666;margin-top:15px;">If you don't have a login, contact administrator</p>
+</div>
+
+<!-- MAIN APP (hidden until login) -->
+<div id="app">
+  <div style="max-width:900px;margin:auto;padding:20px;">
+    <h2 style="text-align:center;color:var(--primary);">Resume Builder</h2>
+    <div class="info">⚠️ All data is processed securely on the server. Your information will not be stored.</div>
+
+    <!-- HEADER STYLE -->
+    <div class="form-section">
+      <h3>🎨 Header Style</h3>
+      <select id="headerStyle"><option value="classic">Classic Centered</option><option value="left-aligned">Left-Aligned</option><option value="bold-line">Bold Line</option></select>
+      <label>Font</label>
+      <select id="fontStyle"><option value="calibri">Calibri</option><option value="arial">Arial</option><option value="times">Times New Roman</option></select>
+    </div>
+
+    <!-- PERSONAL INFO -->
+    <div class="form-section">
+      <h3>👤 Personal Information</h3>
+      <input type="text" id="fullName" placeholder="Full Name *" required>
+      <div class="row"><input class="field" type="email" id="email" placeholder="Email"><input class="field" type="text" id="phone" placeholder="Phone"></div>
+      <input type="text" id="linkedin" placeholder="LinkedIn URL">
+      <input type="text" id="github" placeholder="GitHub / Portfolio">
+      <textarea id="permAddress" rows="2" placeholder="Permanent Address"></textarea>
+      <label><input type="checkbox" id="sameAsPerm" checked> Same as Permanent Address</label>
+      <textarea id="tempAddress" rows="2" placeholder="Temporary Address" style="display:none;"></textarea>
+    </div>
+
+    <!-- OBJECTIVE -->
+    <div class="form-section">
+      <h3>🎯 Career Objective</h3>
+      <select id="objectiveCategory" onchange="showObjectives()"><option value="all">All Categories</option><option value="software">Software / IT</option><option value="data">Data Science / AI</option><option value="mechanical">Mechanical</option><option value="civil">Civil</option><option value="electrical">Electrical</option><option value="management">Management</option><option value="finance">Finance</option><option value="marketing">Marketing</option><option value="hr">HR</option><option value="healthcare">Healthcare</option><option value="general">General</option><option value="design">Design</option><option value="teaching">Teaching</option></select>
+      <div id="objectiveList" class="tag-container"></div>
+      <textarea id="customObjective" placeholder="Or write custom objective..."></textarea>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="form-section">
+      <h3>🎓 Education</h3>
+      <div id="educationEntries"></div>
+      <button class="btn-add" onclick="addEducation()">+ Add Qualification</button>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="form-section">
+      <h3>💻 Skills</h3>
+      <label>Programming Languages</label>
+      <div id="skillProg" class="tag-container"></div>
+      <label>Frameworks</label>
+      <div id="skillFramework" class="tag-container"></div>
+      <label>Tools</label>
+      <div id="skillTools" class="tag-container"></div>
+      <label>Databases</label>
+      <div id="skillDB" class="tag-container"></div>
+      <label>Soft Skills</label>
+      <div id="skillSoft" class="tag-container"></div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="form-section">
+      <h3>📁 Projects</h3>
+      <div id="projectEntries"></div>
+      <button class="btn-add" onclick="addProject()">+ Add Project</button>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="form-section">
+      <h3>💼 Experience / Internships</h3>
+      <div id="experienceEntries"></div>
+      <button class="btn-add" onclick="addExperience()">+ Add Experience</button>
+    </div>
+
+    <!-- CERTIFICATIONS -->
+    <div class="form-section">
+      <h3>📜 Certifications</h3>
+      <div id="certificationEntries"></div>
+      <button class="btn-add" onclick="addCertification()">+ Add Certification</button>
+    </div>
+
+    <!-- LANGUAGES -->
+    <div class="form-section">
+      <h3>🗣️ Languages</h3>
+      <div id="languageTags" class="tag-container"></div>
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <div class="form-section">
+      <h3>🏆 Achievements</h3>
+      <div id="achievementEntries"></div>
+      <button class="btn-add" onclick="addAchievement()">+ Add Achievement</button>
+    </div>
+
+    <!-- HOBBIES -->
+    <div class="form-section">
+      <h3>🎯 Hobbies</h3>
+      <div id="hobbyTags" class="tag-container"></div>
+    </div>
+
+    <!-- DECLARATION -->
+    <div class="form-section">
+      <label><input type="checkbox" id="includeDeclaration" checked> Include declaration</label>
+      <input type="text" id="declarationPlace" placeholder="Place">
+    </div>
+
+    <button style="width:100%;padding:15px;font-size:1.1rem;margin:20px 0;" onclick="downloadResume()">📥 Download Resume (.doc)</button>
+    <p style="text-align:center;font-size:0.8rem;color:#666;">Your data is sent securely and never stored.</p>
+  </div>
+</div>
+
+<script>
+// ---------- LOGIN SYSTEM ----------
+const users = [
+  { user: "admin", pass: "Admin@123" },
+  { user: "student1", pass: "Student2026" },
+  { user: "hr", pass: "HR@resume" }
+];
+
+function checkLogin() {
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+  const valid = users.some(usr => usr.user === u && usr.pass === p);
+  if (valid) {
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initForm();
+  } else {
+    document.getElementById('loginError').textContent = 'Invalid username or password.';
+  }
+}
+
+// ---------- DISABLE RIGHT CLICK & F12 ----------
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', function(e) {
+  if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73) || (e.ctrlKey && e.keyCode === 85) || (e.ctrlKey && e.keyCode === 83)) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+// ---------- DYNAMIC FORM INIT ----------
+const skillsList = {
+  skillProg: ["C","C++","Java","Python","JavaScript","TypeScript","PHP","Ruby","Go","Rust","Kotlin","Swift","Dart","SQL","R","MATLAB","Shell Scripting","HTML/CSS"],
+  skillFramework: ["React.js","Angular","Vue.js","Node.js","Express.js","Django","Flask","Spring Boot","Laravel","ASP.NET","Bootstrap","Tailwind CSS","jQuery","TensorFlow","PyTorch","Pandas","NumPy"],
+  skillTools: ["Git","Docker","Kubernetes","AWS","Azure","GCP","Jenkins","CI/CD","Linux","VS Code","IntelliJ","Eclipse","Postman","JIRA","Figma","Tableau","Power BI","Excel"],
+  skillDB: ["MySQL","PostgreSQL","MongoDB","Oracle","SQL Server","SQLite","Redis","Firebase","DynamoDB"],
+  skillSoft: ["Communication","Teamwork","Problem Solving","Leadership","Time Management","Adaptability","Critical Thinking","Creativity","Attention to Detail","Collaboration"]
+};
+const languageList = ["English","Hindi","Marathi","Tamil","Telugu","Bengali","Gujarati","Kannada","Malayalam","Punjabi","Urdu","Odia","Assamese","Sanskrit","French","German","Spanish","Japanese","Chinese","Arabic"];
+const hobbyList = ["Reading","Coding","Blogging","Photography","Music","Sports","Traveling","Gaming","Cooking","Volunteering","Yoga","Meditation","Gardening","Painting","Dancing"];
+
+// Preloaded objectives (same as before but only as simple array for dropdown)
+const objectives = {
+  software: ["Seeking a challenging software developer position...","To obtain an entry-level software engineering role...","Aspiring software developer with strong fundamentals..."],
+  data: ["Aspiring data analyst seeking an entry-level position...","To secure a role as a junior data scientist..."],
+  mechanical: ["Seeking an entry-level mechanical engineer position...","To obtain a challenging role in the automotive industry..."],
+  civil: ["Seeking an entry-level civil engineer position...","To obtain a challenging role in a construction company..."],
+  electrical: ["Seeking an entry-level electrical engineer position...","To obtain a challenging role in electronics manufacturing..."],
+  management: ["Seeking an entry-level management trainee position...","To obtain a challenging role in a Fortune 500 company..."],
+  finance: ["Seeking an entry-level financial analyst position...","To obtain a challenging role in banking..."],
+  marketing: ["Seeking an entry-level digital marketing position...","To obtain a challenging role in a marketing agency..."],
+  hr: ["Seeking an entry-level HR position...","To obtain a challenging role as an HR associate..."],
+  healthcare: ["Seeking an entry-level position in the pharmaceutical industry...","To obtain a challenging role in a healthcare organization..."],
+  general: ["A highly motivated and detail-oriented fresher...","To secure a challenging position in a dynamic organization..."],
+  design: ["Seeking an entry-level UI/UX designer position...","To obtain a challenging role as a graphic designer..."],
+  teaching: ["Seeking an entry-level teaching position...","To obtain a role as an academic associate..."]
+};
+
+function initForm() {
+  renderTags('skillProg', skillsList.skillProg);
+  renderTags('skillFramework', skillsList.skillFramework);
+  renderTags('skillTools', skillsList.skillTools);
+  renderTags('skillDB', skillsList.skillDB);
+  renderTags('skillSoft', skillsList.skillSoft);
+  renderTags('languageTags', languageList);
+  renderTags('hobbyTags', hobbyList);
+  showObjectives();
+  addEducation(); addProject(); // default one each
+  document.getElementById('sameAsPerm').addEventListener('change', function(){
+    document.getElementById('tempAddress').style.display = this.checked ? 'none' : 'block';
+  });
+}
+
+function renderTags(containerId, list) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  list.forEach(item => {
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.textContent = item;
+    span.onclick = () => span.classList.toggle('selected');
+    container.appendChild(span);
+  });
+}
+
+function getSelectedTags(containerId) {
+  return [...document.querySelectorAll(`#${containerId} .tag.selected`)].map(t => t.textContent);
+}
+
+function showObjectives() {
+  const cat = document.getElementById('objectiveCategory').value;
+  const container = document.getElementById('objectiveList');
+  container.innerHTML = '';
+  let objList = cat === 'all' ? Object.values(objectives).flat() : (objectives[cat] || []);
+  objList.forEach(text => {
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.textContent = text.substring(0, 80) + '...';
+    span.title = text;
+    span.onclick = () => {
+      container.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
+      span.classList.add('selected');
+    };
+    container.appendChild(span);
+  });
+}
+
+// Dynamic entries
+let eduCounter = 0, projCounter = 0, expCounter = 0, certCounter = 0, achCounter = 0;
+function addEducation() {
+  const id = eduCounter++;
+  const div = document.createElement('div'); div.className = 'dynamic-item';
+  div.innerHTML = `<div class="row"><select id="eduDegree_${id}" class="field"><option value="">Degree</option><option>B.Tech CS</option><option>B.Sc IT</option><option>MCA</option><option>MBA</option></select><input id="eduInst_${id}" class="field" placeholder="Institution"></div><div class="row"><input id="eduBoard_${id}" class="field" placeholder="Board/University"><input id="eduYear_${id}" class="field" placeholder="Year"></div><input id="eduPerc_${id}" placeholder="Percentage/CGPA"><button class="btn-remove" onclick="this.parentElement.remove()">Remove</button>`;
+  document.getElementById('educationEntries').appendChild(div);
+}
+function addProject() {
+  const id = projCounter++;
+  const div = document.createElement('div'); div.className = 'dynamic-item';
+  div.innerHTML = `<input id="projTitle_${id}" placeholder="Project Title"><div class="row"><input id="projTech_${id}" class="field" placeholder="Technologies"><input id="projDur_${id}" class="field" placeholder="Duration"></div><textarea id="projDesc_${id}" placeholder="Description (bullet points)"></textarea><button class="btn-remove" onclick="this.parentElement.remove()">Remove</button>`;
+  document.getElementById('projectEntries').appendChild(div);
+}
+function addExperience() {
+  const id = expCounter++;
+  const div = document.createElement('div'); div.className = 'dynamic-item';
+  div.innerHTML = `<input id="expCompany_${id}" placeholder="Company"><div class="row"><input id="expRole_${id}" class="field" placeholder="Role"><input id="expDur_${id}" class="field" placeholder="Duration"></div><textarea id="expDesc_${id}" placeholder="Responsibilities"></textarea><button class="btn-remove" onclick="this.parentElement.remove()">Remove</button>`;
+  document.getElementById('experienceEntries').appendChild(div);
+}
+function addCertification() {
+  const id = certCounter++;
+  const div = document.createElement('div'); div.className = 'dynamic-item';
+  div.innerHTML = `<input id="certName_${id}" placeholder="Certification Name"><div class="row"><input id="certIssuer_${id}" class="field" placeholder="Issuer"><input id="certYear_${id}" class="field" placeholder="Year"></div><button class="btn-remove" onclick="this.parentElement.remove()">Remove</button>`;
+  document.getElementById('certificationEntries').appendChild(div);
+}
+function addAchievement() {
+  const id = achCounter++;
+  const div = document.createElement('div'); div.className = 'dynamic-item';
+  div.innerHTML = `<input id="achText_${id}" placeholder="Achievement description"><button class="btn-remove" onclick="this.parentElement.remove()">Remove</button>`;
+  document.getElementById('achievementEntries').appendChild(div);
+}
+
+// Collect all form data
+function collectFormData() {
+  const selectedObjective = document.querySelector('#objectiveList .tag.selected');
+  const customObj = document.getElementById('customObjective').value.trim();
+  const objective = customObj || (selectedObjective ? selectedObjective.title : '');
+
+  const data = {
+    headerStyle: document.getElementById('headerStyle').value,
+    fontStyle: document.getElementById('fontStyle').value,
+    fullName: document.getElementById('fullName').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    linkedin: document.getElementById('linkedin').value,
+    github: document.getElementById('github').value,
+    permAddress: document.getElementById('permAddress').value,
+    tempAddress: document.getElementById('sameAsPerm').checked ? '' : document.getElementById('tempAddress').value,
+    objective: objective,
+    skills: {
+      skillProg: getSelectedTags('skillProg'),
+      skillFramework: getSelectedTags('skillFramework'),
+      skillTools: getSelectedTags('skillTools'),
+      skillDB: getSelectedTags('skillDB'),
+      skillSoft: getSelectedTags('skillSoft')
+    },
+    languages: getSelectedTags('languageTags'),
+    hobbies: getSelectedTags('hobbyTags'),
+    includeDeclaration: document.getElementById('includeDeclaration').checked,
+    declarationPlace: document.getElementById('declarationPlace').value,
+    education: [],
+    projects: [],
+    experience: [],
+    certifications: [],
+    achievements: []
+  };
+
+  // Collect dynamic entries
+  document.querySelectorAll('#educationEntries .dynamic-item').forEach((item, idx) => {
+    const getId = (sel) => item.querySelector(`[id^="${sel}"]`);
+    data.education.push({
+      degree: getId('eduDegree_')?.value || '',
+      institution: getId('eduInst_')?.value || '',
+      board: getId('eduBoard_')?.value || '',
+      year: getId('eduYear_')?.value || '',
+      percentage: getId('eduPerc_')?.value || ''
+    });
+  });
+  document.querySelectorAll('#projectEntries .dynamic-item').forEach(item => {
+    const getId = (sel) => item.querySelector(`[id^="${sel}"]`);
+    data.projects.push({
+      title: getId('projTitle_')?.value || '',
+      technologies: getId('projTech_')?.value || '',
+      duration: getId('projDur_')?.value || '',
+      description: getId('projDesc_')?.value || ''
+    });
+  });
+  document.querySelectorAll('#experienceEntries .dynamic-item').forEach(item => {
+    const getId = (sel) => item.querySelector(`[id^="${sel}"]`);
+    data.experience.push({
+      company: getId('expCompany_')?.value || '',
+      role: getId('expRole_')?.value || '',
+      duration: getId('expDur_')?.value || '',
+      description: getId('expDesc_')?.value || ''
+    });
+  });
+  document.querySelectorAll('#certificationEntries .dynamic-item').forEach(item => {
+    const getId = (sel) => item.querySelector(`[id^="${sel}"]`);
+    data.certifications.push({
+      name: getId('certName_')?.value || '',
+      issuer: getId('certIssuer_')?.value || '',
+      year: getId('certYear_')?.value || ''
+    });
+  });
+  document.querySelectorAll('#achievementEntries .dynamic-item').forEach(item => {
+    const getId = (sel) => item.querySelector(`[id^="${sel}"]`);
+    data.achievements.push({
+      text: getId('achText_')?.value || ''
+    });
+  });
+  return data;
+}
+
+// Send to secret function
+async function downloadResume() {
+  const data = collectFormData();
+  try {
+    const response = await fetch('/.netlify/functions/generate-resume', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!response.ok) throw new Error('Generation failed');
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = (data.fullName || 'resume') + '_ATS_Resume.doc';
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    alert('Error generating resume. Please try again.');
+    console.error(err);
+  }
+}
+</script>
+</body>
+</html>
