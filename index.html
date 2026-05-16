@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resume Builder - Login</title>
+  <title>Resume Builder - Innovation Computer Academy</title>
   <style>
     :root {
-      --primary: #1a73e8;
+      --primary: #0d6efd;
       --bg: #f0f2f5;
       --card-bg: #fff;
       --text: #202124;
@@ -18,13 +18,14 @@
       background: white; border-radius: 12px; padding: 30px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
       max-width: 450px; width: 90%; text-align: center;
     }
-    .overlay h2 { margin-bottom: 20px; color: var(--primary); }
+    .overlay h2 { margin-bottom: 10px; color: var(--primary); }
+    .overlay p { margin-bottom: 20px; color: #555; }
     input, select, textarea, button {
       width: 100%; padding: 10px; margin: 6px 0; border: 1px solid var(--border);
       border-radius: 8px; font-size: 0.9rem; font-family: inherit;
     }
     button { background: var(--primary); color: white; font-weight: bold; border: none; cursor: pointer; }
-    button:hover { background: #1557b0; }
+    button:hover { background: #0b5ed7; }
     .error { color: red; margin: 10px 0; }
     #app { display: none; }
     .form-section { background: var(--card-bg); border-radius: 10px; padding: 20px; margin: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -44,13 +45,13 @@
 
 <!-- LOGIN GATE -->
 <div id="loginOverlay" class="overlay">
-  <h2>🔐 Access Restricted</h2>
-  <p>Enter your credentials to continue</p>
-  <input type="text" id="username" placeholder="Username">
+  <h2>🔐 Innovation Computer Academy, Satara</h2>
+  <p>Enter your student credentials to access the resume builder</p>
+  <input type="text" id="username" placeholder="Username (e.g., student1)">
   <input type="password" id="password" placeholder="Password">
   <button onclick="checkLogin()">Login</button>
   <div id="loginError" class="error"></div>
-  <p style="font-size:0.7rem;color:#666;margin-top:15px;">If you don't have a login, contact administrator</p>
+  <p style="font-size:0.7rem;color:#666;margin-top:15px;">If you don't have a login, contact your instructor.</p>
 </div>
 
 <!-- MAIN APP (hidden until login) -->
@@ -161,27 +162,47 @@
 </div>
 
 <script>
-// ---------- LOGIN SYSTEM ----------
-const users = [
-  { user: "admin", pass: "Admin@123" },
-  { user: "student1", pass: "Student2026" },
-  { user: "hr", pass: "HR@resume" }
-];
-
+// ========== DYNAMIC LOGIN SYSTEM (Rule‑Based, No User List) ==========
 function checkLogin() {
-  const u = document.getElementById('username').value.trim();
-  const p = document.getElementById('password').value.trim();
-  const valid = users.some(usr => usr.user === u && usr.pass === p);
-  if (valid) {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+
+  // Username must be "student" followed by a number
+  const match = username.match(/^student(\d+)$/);
+  if (!match) {
+    document.getElementById('loginError').textContent = 'Invalid username. Use student1, student2, etc.';
+    return;
+  }
+
+  const studentNumber = parseInt(match[1], 10);
+  const expectedPassword = generatePassword(studentNumber);
+
+  if (password === expectedPassword) {
     document.getElementById('loginOverlay').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     initForm();
   } else {
-    document.getElementById('loginError').textContent = 'Invalid username or password.';
+    document.getElementById('loginError').textContent = 'Incorrect password.';
   }
 }
 
-// ---------- DISABLE RIGHT CLICK & F12 ----------
+// Secret password rule (identical to your generator)
+function generatePassword(n) {
+  const set2 = 'abcdefghi';          // 9 small letters a‑i
+  const set3 = '0123456789';         // 10 digits
+  const set4 = 'JKLMNOPQRST';        // 10 capital letters J‑T
+  const set5 = '!@#$%&*';           // 7 special symbols
+
+  const char1 = 'I';                 // Always capital I
+  const char2 = set2[n % set2.length];
+  const char3 = set3[n % set3.length];
+  const char4 = set4[n % set4.length];
+  const char5 = set5[n % set5.length];
+
+  return char1 + char2 + char3 + char4 + char5;
+}
+
+// ========== DISABLE RIGHT CLICK & F12 ==========
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', function(e) {
   if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73) || (e.ctrlKey && e.keyCode === 85) || (e.ctrlKey && e.keyCode === 83)) {
@@ -190,7 +211,7 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// ---------- DYNAMIC FORM INIT ----------
+// ========== DYNAMIC FORM INIT ==========
 const skillsList = {
   skillProg: ["C","C++","Java","Python","JavaScript","TypeScript","PHP","Ruby","Go","Rust","Kotlin","Swift","Dart","SQL","R","MATLAB","Shell Scripting","HTML/CSS"],
   skillFramework: ["React.js","Angular","Vue.js","Node.js","Express.js","Django","Flask","Spring Boot","Laravel","ASP.NET","Bootstrap","Tailwind CSS","jQuery","TensorFlow","PyTorch","Pandas","NumPy"],
@@ -201,7 +222,7 @@ const skillsList = {
 const languageList = ["English","Hindi","Marathi","Tamil","Telugu","Bengali","Gujarati","Kannada","Malayalam","Punjabi","Urdu","Odia","Assamese","Sanskrit","French","German","Spanish","Japanese","Chinese","Arabic"];
 const hobbyList = ["Reading","Coding","Blogging","Photography","Music","Sports","Traveling","Gaming","Cooking","Volunteering","Yoga","Meditation","Gardening","Painting","Dancing"];
 
-// 100+ IT FRESHER CAREER OBJECTIVES (strictly industry-relevant)
+// 100+ IT FRESHER CAREER OBJECTIVES (industry-relevant)
 const objectives = {
   software: [
     "Seeking an entry‑level software engineer position where I can apply my strong foundation in data structures, algorithms, and object‑oriented programming to build scalable and efficient applications.",
