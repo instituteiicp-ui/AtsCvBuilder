@@ -82,7 +82,7 @@
     <!-- OBJECTIVE -->
     <div class="form-section">
       <h3>🎯 Career Objective</h3>
-      <select id="objectiveCategory" onchange="showObjectives()"><option value="all">All Categories</option><option value="software">Software / IT</option><option value="data">Data Science / AI</option><option value="mechanical">Mechanical</option><option value="civil">Civil</option><option value="electrical">Electrical</option><option value="management">Management</option><option value="finance">Finance</option><option value="marketing">Marketing</option><option value="hr">HR</option><option value="healthcare">Healthcare</option><option value="general">General</option><option value="design">Design</option><option value="teaching">Teaching</option></select>
+      <select id="objectiveCategory" onchange="showObjectives()"><option value="all">All Categories</option><option value="software">Software Development</option><option value="webdev">Web Development</option><option value="mobile">Mobile App Development</option><option value="data">Data Science / AI</option><option value="cloud">Cloud / DevOps</option><option value="cybersecurity">Cybersecurity</option><option value="testing">Software Testing</option><option value="networking">Networking</option><option value="support">IT Support</option><option value="general">General IT Fresher</option></select>
       <div id="objectiveList" class="tag-container"></div>
       <textarea id="customObjective" placeholder="Or write custom objective..."></textarea>
     </div>
@@ -201,21 +201,118 @@ const skillsList = {
 const languageList = ["English","Hindi","Marathi","Tamil","Telugu","Bengali","Gujarati","Kannada","Malayalam","Punjabi","Urdu","Odia","Assamese","Sanskrit","French","German","Spanish","Japanese","Chinese","Arabic"];
 const hobbyList = ["Reading","Coding","Blogging","Photography","Music","Sports","Traveling","Gaming","Cooking","Volunteering","Yoga","Meditation","Gardening","Painting","Dancing"];
 
-// Preloaded objectives (same as before but only as simple array for dropdown)
+// 100+ IT FRESHER CAREER OBJECTIVES (strictly industry-relevant)
 const objectives = {
-  software: ["Seeking a challenging software developer position...","To obtain an entry-level software engineering role...","Aspiring software developer with strong fundamentals..."],
-  data: ["Aspiring data analyst seeking an entry-level position...","To secure a role as a junior data scientist..."],
-  mechanical: ["Seeking an entry-level mechanical engineer position...","To obtain a challenging role in the automotive industry..."],
-  civil: ["Seeking an entry-level civil engineer position...","To obtain a challenging role in a construction company..."],
-  electrical: ["Seeking an entry-level electrical engineer position...","To obtain a challenging role in electronics manufacturing..."],
-  management: ["Seeking an entry-level management trainee position...","To obtain a challenging role in a Fortune 500 company..."],
-  finance: ["Seeking an entry-level financial analyst position...","To obtain a challenging role in banking..."],
-  marketing: ["Seeking an entry-level digital marketing position...","To obtain a challenging role in a marketing agency..."],
-  hr: ["Seeking an entry-level HR position...","To obtain a challenging role as an HR associate..."],
-  healthcare: ["Seeking an entry-level position in the pharmaceutical industry...","To obtain a challenging role in a healthcare organization..."],
-  general: ["A highly motivated and detail-oriented fresher...","To secure a challenging position in a dynamic organization..."],
-  design: ["Seeking an entry-level UI/UX designer position...","To obtain a challenging role as a graphic designer..."],
-  teaching: ["Seeking an entry-level teaching position...","To obtain a role as an academic associate..."]
+  software: [
+    "Seeking an entry‑level software engineer position where I can apply my strong foundation in data structures, algorithms, and object‑oriented programming to build scalable and efficient applications.",
+    "To obtain a challenging role as a Java developer in a product‑based company, contributing to the entire SDLC while continuously learning modern frameworks and best practices.",
+    "Aspiring software developer with hands‑on experience in Python and JavaScript, looking for an opportunity to work on full‑stack projects and deliver high‑quality code.",
+    "Motivated CS graduate seeking a software development role in a collaborative team that encourages innovation and provides mentorship to grow as a well‑rounded engineer.",
+    "To secure a position as a backend developer where I can utilize my skills in Node.js, databases, and REST API design to build robust server‑side solutions.",
+    "Looking for an entry‑level role in a fast‑paced tech startup where I can contribute to product development, learn from senior engineers, and make an immediate impact.",
+    "Aiming to join a reputed IT firm as a software developer, leveraging my knowledge of C++, Linux, and version control to develop reliable and maintainable software.",
+    "Seeking a graduate engineer trainee position where I can apply my academic knowledge of computer science fundamentals and grow into a full‑stack developer.",
+    "To work as a junior developer in an agile environment, using my problem‑solving mindset and passion for clean code to deliver value to end‑users.",
+    "Desire an entry‑level software engineering role that challenges me with complex systems, allows me to write efficient code, and offers long‑term career growth.",
+    "To begin my career as an application developer, combining my proficiency in Java and SQL with a keen interest in learning cloud‑native technologies.",
+    "Seeking a developer position where I can contribute to open‑source projects, build community tools, and improve my coding skills through peer reviews and mentorship.",
+    "To join a technology‑driven organization as a software developer trainee, bringing enthusiasm, strong analytical skills, and a commitment to continuous learning.",
+    "Aiming for a role in product development where I can apply my understanding of design patterns, microservices, and agile methodologies to deliver high‑impact features.",
+    "To leverage my academic background in computer engineering and my internship experience to secure a challenging software developer position in a growth‑oriented company.",
+    "Looking for a junior software engineer role that offers exposure to cloud platforms, modern frameworks, and best engineering practices from day one.",
+    "To contribute as a full‑stack developer intern, utilizing my skills in React, Node.js, and MongoDB to build intuitive and performant web applications.",
+    "Seeking an entry‑level position where I can apply my knowledge of algorithms and system design, learn from experienced mentors, and eventually lead technical projects.",
+    "To obtain a software development role in a company that values innovation, teamwork, and clean architecture, and that supports my growth into a tech lead.",
+    "Aspiring developer looking to join a mission‑driven tech company where I can use my coding skills to solve real‑world problems and positively impact society."
+  ],
+  webdev: [
+    "Seeking an entry‑level frontend developer position where I can apply my skills in HTML, CSS, JavaScript, and React to create responsive and accessible user interfaces.",
+    "To join a digital agency as a junior web developer, contributing to creative projects while mastering modern frameworks like Next.js and Tailwind CSS.",
+    "Aiming to work as a full‑stack web developer, combining my knowledge of the MERN stack with a strong desire to learn cloud deployment and DevOps practices.",
+    "To obtain a role as a UI developer where I can translate design mockups into pixel‑perfect, interactive web pages and ensure cross‑browser compatibility.",
+    "Looking for an opportunity to build and maintain dynamic websites and web applications using PHP, Laravel, and MySQL in a professional setting.",
+    "Aspiring web developer seeking to contribute to e‑commerce platforms, optimize page speed, and deliver seamless user experiences through modern JavaScript frameworks.",
+    "To secure a position as a WordPress/PHP developer where I can customize themes, develop plugins, and help clients establish a strong online presence.",
+    "Seeking an entry‑level position that allows me to work with cutting‑edge web technologies like GraphQL, TypeScript, and serverless architectures.",
+    "To begin my career in web development by joining a product team where I can write clean, maintainable code and learn about SEO and web performance optimization.",
+    "To contribute as a junior Angular developer, building enterprise‑grade single‑page applications with a focus on modularity and testability."
+  ],
+  mobile: [
+    "Seeking an entry‑level Android developer role where I can apply my knowledge of Kotlin, Jetpack Compose, and MVVM architecture to build intuitive mobile apps.",
+    "To join a mobile‑first company as an iOS developer trainee, leveraging my skills in Swift, UIKit, and Core Data to create delightful user experiences.",
+    "Aspiring cross‑platform mobile developer looking for a role where I can use Flutter and Dart to build high‑performance apps for both Android and iOS.",
+    "To secure a position as a React Native developer, contributing to mobile applications that serve millions of users and learning native module integration.",
+    "Looking for a challenging opportunity in mobile app development that allows me to work with REST APIs, Firebase, and modern state management libraries.",
+    "To begin my career as a mobile developer by joining a startup where I can take ownership of features, from design to deployment, under expert guidance.",
+    "Seeking a junior mobile engineer role focused on performance optimization, offline storage, and smooth animations for a seamless user experience.",
+    "To leverage my understanding of mobile UI/UX principles and programming skills to develop apps that are both functional and visually appealing."
+  ],
+  data: [
+    "Aspiring data analyst seeking an entry‑level position where I can apply my skills in SQL, Python, Excel, and data visualization to derive actionable business insights.",
+    "To secure a role as a junior data scientist, contributing to predictive modeling, A/B testing, and machine learning projects that drive data‑informed decisions.",
+    "Motivated fresher looking to join a data‑driven team where I can use tools like Tableau, Power BI, and Jupyter Notebooks to transform raw data into meaningful stories.",
+    "Seeking a challenging position in business intelligence to help organizations harness the power of data, build dashboards, and track key performance indicators.",
+    "To work as a machine learning engineer trainee, applying my knowledge of Python, Scikit‑learn, and TensorFlow to build and deploy ML models.",
+    "Aiming for an entry‑level analytics role where I can combine my statistical knowledge with programming to solve complex business problems and support data strategy.",
+    "To contribute as a data engineer associate, building ETL pipelines, ensuring data quality, and enabling data‑driven culture across departments.",
+    "Looking for an opportunity to work with big data technologies (Hadoop, Spark) and cloud data warehouses, and grow into a full‑fledged data engineer.",
+    "To secure an internship‑to‑full‑time data role where I can apply my academic projects in NLP and computer vision to real‑world AI solutions.",
+    "Aspiring analytics consultant seeking a role that lets me bridge the gap between technical teams and business stakeholders through clear data storytelling.",
+    "To join a fast‑growing startup as a data analyst, driving product and marketing decisions through cohort analysis, funnel optimization, and experimentation."
+  ],
+  cloud: [
+    "Seeking an entry‑level cloud engineer position where I can apply my knowledge of AWS/Azure, infrastructure as code, and Linux administration to support scalable cloud environments.",
+    "To join a cloud‑native company as a junior DevOps engineer, contributing to CI/CD pipelines, containerization, and monitoring solutions.",
+    "Aspiring solutions architect trainee, looking to help businesses migrate to the cloud, optimize costs, and design resilient architectures.",
+    "To secure a role as a cloud support associate, using my troubleshooting skills and foundational cloud certifications to assist customers in their cloud journey.",
+    "Motivated fresher aiming to work with cloud platforms (AWS, GCP, Azure) and learn about serverless computing, Kubernetes, and cloud security.",
+    "To begin my career in site reliability engineering (SRE), applying my scripting and monitoring skills to ensure high availability and performance of cloud‑based services.",
+    "Seeking a position where I can leverage my Terraform and Docker knowledge to automate infrastructure provisioning and contribute to immutable deployments.",
+    "To obtain a cloud engineer role that offers hands‑on experience with managed services, cost management, and disaster recovery strategies."
+  ],
+  cybersecurity: [
+    "Aspiring cybersecurity analyst seeking an entry‑level role in a Security Operations Center (SOC), where I can apply my knowledge of network security, SIEM, and threat analysis.",
+    "To secure a position as an information security associate, helping protect organizational assets through vulnerability assessments, penetration testing, and security awareness.",
+    "Motivated fresher aiming to work as an ethical hacker / penetration tester, using my skills in Kali Linux, Metasploit, and OWASP Top 10 to identify and remediate vulnerabilities.",
+    "Looking for a challenging role in cybersecurity compliance and governance, assisting in audits, risk assessments, and implementation of ISO 27001 frameworks.",
+    "To join a security team as a junior analyst, monitoring threats, responding to incidents, and continuously improving the organization’s security posture.",
+    "Seeking an entry‑level position that allows me to specialize in cloud security, identity access management, and encryption technologies.",
+    "To contribute as a network security engineer, configuring firewalls, VPNs, and intrusion detection systems to protect critical infrastructure.",
+    "Aspiring security researcher looking to apply my reverse engineering and malware analysis skills to detect and defend against advanced cyber threats."
+  ],
+  testing: [
+    "Seeking an entry‑level software tester / QA engineer position where I can apply my understanding of testing methodologies, test case design, and automation to deliver high‑quality software.",
+    "To join a product team as a quality assurance analyst, contributing to manual and automated testing, bug tracking, and ensuring a seamless user experience.",
+    "Aspiring automation tester looking to work with tools like Selenium, JUnit, and Postman to build robust test suites and accelerate release cycles.",
+    "To secure a role as a QA intern, learning performance testing, API testing, and CI/CD integration from experienced mentors.",
+    "Motivated fresher aiming to ensure zero‑defect delivery by combining attention to detail with a passion for user‑centric testing.",
+    "Seeking a position in a company that values quality engineering and offers a clear growth path from manual testing to test automation and SDET."
+  ],
+  networking: [
+    "Seeking an entry‑level network engineer position where I can apply my knowledge of routing, switching, TCP/IP, and network troubleshooting to support enterprise networks.",
+    "To join an IT infrastructure team as a network administrator, configuring LAN/WAN, managing firewalls, and ensuring network uptime.",
+    "Aspiring NOC engineer looking for a role where I can monitor network performance, respond to alerts, and participate in incident management.",
+    "To work as a technical support engineer, leveraging my CCNA knowledge and communication skills to resolve network and system issues.",
+    "Seeking a challenging opportunity in telecom or ISP sectors to gain hands‑on experience with network protocols, VPNs, and wireless technologies."
+  ],
+  support: [
+    "Looking for an entry‑level IT support / helpdesk role where I can assist users with hardware/software issues, set up systems, and provide excellent customer service.",
+    "To join a corporate IT department as a desktop support engineer, applying my troubleshooting skills and knowledge of Windows/Linux environments.",
+    "Aspiring application support analyst seeking a role where I can debug and resolve software issues, document solutions, and improve system reliability.",
+    "To secure a position as a technical support specialist, utilizing my communication skills and technical background to bridge the gap between development teams and end‑users."
+  ],
+  general: [
+    "A highly motivated IT fresher with a strong academic record, seeking an entry‑level position where I can contribute my technical skills, learn from industry experts, and grow into a leadership role.",
+    "To obtain a challenging position in the IT industry that utilizes my knowledge of programming, databases, and problem‑solving to drive organizational success.",
+    "Seeking a fresher role in a reputed IT company that offers continuous learning opportunities, a supportive work environment, and a clear career path.",
+    "To begin my professional journey with an organization that values innovation and integrity, where I can apply my technical and interpersonal skills to make a meaningful difference.",
+    "Aspiring IT professional looking for a platform to showcase my abilities, take on responsibilities, and become a valuable asset while advancing my career.",
+    "To secure an entry‑level position that allows me to translate my academic projects into real‑world solutions, develop new competencies, and excel in a collaborative team.",
+    "Motivated computer science graduate aiming to join a growth‑oriented company where dedication, creativity, and a strong work ethic are recognized and rewarded.",
+    "To work in a challenging IT environment that pushes me to continuously improve, solve complex problems, and contribute to innovative technology solutions.",
+    "Seeking an opportunity to kick‑start my IT career in a company that provides hands‑on training, mentorship, and exposure to the latest technologies.",
+    "To associate with an organization that empowers me to use my skills for its growth while giving me the resources and guidance to achieve my professional goals."
+  ]
 };
 
 function initForm() {
